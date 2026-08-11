@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>turducken — LoRA training</title>
+  <!-- Inline SVG favicon: avoids a binary asset and the 404 browsers request by default. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>%F0%9F%A6%83</text></svg>">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🦃</span>
+      <div>
+        <h1>turducken</h1>
+        <p class="tagline">LoRA training, explained all the way down</p>
+      </div>
+    </div>
+    <div id="hardware-chip" class="chip chip-muted">checking hardware…</div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-panel="recipe" role="tab">1 · Recipe</button>
+    <button class="tab" data-panel="dataset" role="tab">2 · Dataset</button>
+    <button class="tab" data-panel="review" role="tab">3 · Review</button>
+    <button class="tab" data-panel="train" role="tab">4 · Train</button>
+    <button class="tab" data-panel="learn" role="tab">Learn</button>
+  </nav>
+
+  <main>
+    <!-- ── Recipe ─────────────────────────────────────────────── -->
+    <section id="panel-recipe" class="panel active">
+      <div class="panel-head">
+        <div>
+          <h2>Build your recipe</h2>
+          <p class="sub">Every setting explains what it does, why it matters, and what breaks
+            when it is wrong. Start with the essentials — the rest have sensible defaults.</p>
+        </div>
+        <div class="tier-switch" role="group" aria-label="Detail level">
+          <button class="tier-btn active" data-tier="essential">Essentials</button>
+          <button class="tier-btn" data-tier="standard">Standard</button>
+          <button class="tier-btn" data-tier="advanced">Everything</button>
+        </div>
+      </div>
+      <div id="hardware-note" class="note hidden"></div>
+      <form id="recipe-form" class="knobs"></form>
+    </section>
+
+    <!-- ── Dataset ────────────────────────────────────────────── -->
+    <section id="panel-dataset" class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Check your dataset</h2>
+          <p class="sub">More LoRAs fail from dataset problems than from hyperparameters, and
+            those problems are invisible once training starts. Look now.</p>
+        </div>
+        <button id="analyze-btn" class="primary">Analyze dataset</button>
+      </div>
+      <div id="dataset-result" class="result-area">
+        <p class="empty">Point <code>data.dataset_path</code> at a folder of images with matching
+          <code>.txt</code> captions, then analyze.</p>
+      </div>
+    </section>
+
+    <!-- ── Review ─────────────────────────────────────────────── -->
+    <section id="panel-review" class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Pre-flight review</h2>
+          <p class="sub">Advisories, not rules. Each one explains its reasoning so you can
+            decide — nothing here stops you running.</p>
+        </div>
+        <button id="review-btn" class="primary">Review recipe</button>
+      </div>
+      <div id="review-result" class="result-area">
+        <p class="empty">Run a review to see what this recipe is likely to do.</p>
+      </div>
+    </section>
+
+    <!-- ── Train ──────────────────────────────────────────────── -->
+    <section id="panel-train" class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Train</h2>
+          <p class="sub">Watch the loop run. The simulated backend narrates what a real run
+            would be doing at each stage — it writes no adapter file.</p>
+        </div>
+        <div class="row">
+          <select id="backend-select" aria-label="Training backend"></select>
+          <button id="start-btn" class="primary">Start training</button>
+          <button id="cancel-btn" class="ghost hidden">Cancel</button>
+        </div>
+      </div>
+      <div id="backend-note" class="note hidden"></div>
+      <div id="job-status" class="hidden">
+        <div class="progress-wrap">
+          <div class="progress"><div id="progress-bar"></div></div>
+          <div id="progress-label" class="mono"></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><span class="stat-label">Step</span><span id="stat-step">—</span></div>
+          <div class="stat"><span class="stat-label">Loss</span><span id="stat-loss">—</span></div>
+          <div class="stat"><span class="stat-label">ETA</span><span id="stat-eta">—</span></div>
+          <div class="stat"><span class="stat-label">State</span><span id="stat-state">—</span></div>
+        </div>
+        <canvas id="loss-chart" height="160" aria-label="Loss over steps"></canvas>
+        <p class="caption">Diffusion loss is noisy by nature — each step samples a random
+          timestep, so the jitter is expected. Judge runs by sample images, not this curve.</p>
+      </div>
+      <div id="job-log" class="log" role="log" aria-live="polite"></div>
+    </section>
+
+    <!-- ── Learn ──────────────────────────────────────────────── -->
+    <section id="panel-learn" class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>How LoRAs are actually made</h2>
+          <p class="sub">Entirely optional. Read none of it and the app still works — read all
+            of it and you will know why every default is what it is.</p>
+        </div>
+      </div>
+      <div class="learn-layout">
+        <aside id="lesson-list" class="lesson-list"></aside>
+        <article id="lesson-body" class="lesson-body">
+          <p class="empty">Pick a lesson.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
